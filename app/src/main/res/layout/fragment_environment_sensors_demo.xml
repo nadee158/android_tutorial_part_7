@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context="lk.uok.mit.fragment.EnvironmentSensorsDemoFragment">
+
+    <TextView
+        android:id="@+id/textViewAmbientTemperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Ambient Temperature" />
+
+    <TextView
+        android:id="@+id/textViewIlluminance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Illuminance" />
+
+    <TextView
+        android:id="@+id/textViewAmbientAirPressure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Ambient Air Pressure" />
+
+    <TextView
+        android:id="@+id/textViewAmbientRelativeHumidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Ambient Relative Humidity" />
+
+    <TextView
+        android:id="@+id/textViewDeviceTemperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Device temperature" />
+
+</LinearLayout>

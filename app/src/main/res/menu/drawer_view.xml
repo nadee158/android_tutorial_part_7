@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_send_message"
+            android:title="Send Message" />
+        <item
+            android:id="@+id/nav_hello_world"
+            android:title="Message List" />
+        <item
+            android:id="@+id/nav_accelerometer_demo"
+            android:title="Accelerometer Demo" />
+        <item
+            android:id="@+id/nav_rotational_vector_sensor_demo"
+            android:title="Rotational Vector Sensor Demo" />
+        <item
+            android:id="@+id/nav_gyroscope_demo"
+            android:title="Gyroscope Demo" />
+        <item
+            android:id="@+id/nav_orientation_sensor_demo"
+            android:title="Orientation Sensor Demo" />
+        <item
+            android:id="@+id/nav_proximity_sensor_demo"
+            android:title="Proximity Sensor Demo" />
+        <item
+            android:id="@+id/nav_environment_sensor_demo"
+            android:title="Environment Sensor Demo" />
+    </group>
+</menu>

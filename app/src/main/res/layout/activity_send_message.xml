@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <EditText
+        android:id="@+id/editTextMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/autoCompleteTextContactNumber"
+        android:layout_marginTop="10dp"
+        android:hint="@string/hint_edit_text_message"
+        android:inputType="text|textLongMessage" />
+
+    <Button
+        android:id="@+id/buttonSend"
+        style="@style/custom_button_font"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/editTextMessage"
+        android:layout_marginTop="10dp"
+        android:background="@color/button_background_colour"
+        android:text="@string/text_button_send"
+        android:enabled="false"
+        android:textColor="@color/button_text_colour" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextContactNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="25dp"
+        android:hint="@string/hint_edit_text_contact_number" />
+
+</RelativeLayout>
