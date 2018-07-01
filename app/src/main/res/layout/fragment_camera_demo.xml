@@ -1,0 +1,47 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutCameraDemoParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="lk.uok.mit.fragment.CameraDemoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/imageViewCameraImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="Image from Camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonCameraApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camera App"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCameraAPI"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCameraImage"
+        app:layout_constraintVertical_bias="0.363" />
+
+    <Button
+        android:id="@+id/buttonCameraAPI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camera API"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCameraApp"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCameraImage"
+        app:layout_constraintVertical_bias="0.358" />
+
+</android.support.constraint.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import lk.uok.mit.fragment.AccelerometerDemoFragment;
+import lk.uok.mit.fragment.CameraDemoFragment;
 import lk.uok.mit.fragment.EnvironmentSensorsDemoFragment;
 import lk.uok.mit.fragment.GyroscopeDemoFragment;
 import lk.uok.mit.fragment.MainFragment;
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new AccelerometerDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new RotationalVectorSensorDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;
@@ -104,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new OrientationSensorDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;
@@ -114,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new ProximitySensorDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;
@@ -124,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new EnvironmentSensorsDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;
@@ -134,7 +130,15 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new GyroscopeDemoFragment());
-                                // or ft.add(R.id.content_frame, new MainFragment());
+                                // Complete the changes added above
+                                ft.commit();
+                                break;
+                            case R.id.nav_camera_demo:
+                                //Open the  CameraDemoFragment
+                                // Begin the transaction
+                                ft = getSupportFragmentManager().beginTransaction();
+                                // Replace the contents of the container with the new fragment
+                                ft.replace(R.id.fragment_content, new CameraDemoFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;

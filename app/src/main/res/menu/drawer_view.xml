@@ -25,5 +25,8 @@
         <item
             android:id="@+id/nav_environment_sensor_demo"
             android:title="Environment Sensor Demo" />
+        <item
+            android:id="@+id/nav_camera_demo"
+            android:title="Camera Demo" />
     </group>
 </menu>
