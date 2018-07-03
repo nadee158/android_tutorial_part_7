@@ -11,9 +11,8 @@
         android:id="@+id/imageViewCameraImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         android:contentDescription="Image from Camera"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,25 +22,10 @@
         android:id="@+id/buttonCameraApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Camera App"
+        android:text="Capture Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonCameraAPI"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCameraImage"
-        app:layout_constraintVertical_bias="0.363" />
-
-    <Button
-        android:id="@+id/buttonCameraAPI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Camera API"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCameraApp"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCameraImage"
-        app:layout_constraintVertical_bias="0.358" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCameraImage" />
 
 </android.support.constraint.ConstraintLayout>
