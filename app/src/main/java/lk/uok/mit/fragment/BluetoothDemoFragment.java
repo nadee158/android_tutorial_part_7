@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.Set;
 
 import lk.uok.mit.helloworld.R;
 import lk.uok.mit.util.DemoUtil;
@@ -60,7 +63,7 @@ public class BluetoothDemoFragment extends Fragment {
         //set the text appear in title bar
         getActivity().setTitle("Bluetooth Demo");
         //initilaize context
-        this.context = getContext();
+        context = getContext();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bluetooth_demo, container, false);
     }
@@ -69,7 +72,7 @@ public class BluetoothDemoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //get the button reference
-        this.buttonSwitchBluetooth = view.findViewById(R.id.buttonSwitchBluetooth);
+        buttonSwitchBluetooth = view.findViewById(R.id.buttonSwitchBluetooth);
         //set the onclick listener of the button
         buttonSwitchBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +83,7 @@ public class BluetoothDemoFragment extends Fragment {
         });
 
         //get the button reference for set visibility button
-        this.buttonSwitchBluetoothVisibility = view.findViewById(R.id.buttonSwitchBluetoothVisibility);
+        buttonSwitchBluetoothVisibility = view.findViewById(R.id.buttonSwitchBluetoothVisibility);
         //set the onclick listener of set visibility button
         buttonSwitchBluetoothVisibility.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +93,39 @@ public class BluetoothDemoFragment extends Fragment {
             }
         });
 
+    }
+
+    //to list the Bluetooth devices
+    private void listBluetoothDevices() {
+        //check if user has given the required permissions
+        boolean hasUserPermissions = DemoUtil.hasUserPermissions(context, requiredPermissions);
+        if (!(hasUserPermissions)) {
+            //if the requested permissions are not already granted, request permission
+            requestPermissions(requiredPermissions, PERMISSION_REQUEST_CODE);
+        } else {
+            //check if the bluetooth is available in this device
+            boolean bluetoothAvailable = checkIfBluetoothAvailable();
+            if (bluetoothAvailable) {
+                //if bluetooth is available, check if it is enabled
+                if (mBluetoothAdapter.isEnabled()) {
+                    //list the paired devices
+                    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                    for (BluetoothDevice bluetoothDevice : pairedDevices) {
+                        bluetoothDevice.getAddress();
+                        bluetoothDevice.getBondState();
+                        bluetoothDevice.getName();
+                    }
+                } else {
+                    //notify the user that bluetooth of device is turned off
+                    Toast.makeText(context,
+                            "Bluetooth is turned off!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                //else notify the user
+                Toast.makeText(context,
+                        "Bluetooth is not Available in this device!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     //to set visibility of device to other Bluetooth devices
@@ -104,7 +140,7 @@ public class BluetoothDemoFragment extends Fragment {
             boolean bluetoothAvailable = checkIfBluetoothAvailable();
             if (bluetoothAvailable) {
                 //if bluetooth is available, check if it is enabled
-                if (this.mBluetoothAdapter.isEnabled()) {
+                if (mBluetoothAdapter.isEnabled()) {
                     //check if the device is already visible over bluetooth
                     if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
                         //if not try to enable Bluetooth visibility by sending user request
@@ -143,7 +179,7 @@ public class BluetoothDemoFragment extends Fragment {
             boolean bluetoothAvailable = checkIfBluetoothAvailable();
             if (bluetoothAvailable) {
                 //if bluetooth is available, check if it is enabled
-                if (!this.mBluetoothAdapter.isEnabled()) {
+                if (!mBluetoothAdapter.isEnabled()) {
                     //if bluetooth is not enabled, first set the status
                     isBluetoothSwitchedOn = false;
                     //try to enable Bluetooth by sending user request
@@ -153,7 +189,7 @@ public class BluetoothDemoFragment extends Fragment {
                     //if bluetooth is enabled, first set the status
                     isBluetoothSwitchedOn = true;
                     //disable bluetooth
-                    this.mBluetoothAdapter.disable();
+                    mBluetoothAdapter.disable();
                     //change text and background colour of the button
                     buttonSwitchBluetooth.setText("Turn Bluetooth On");
                     buttonSwitchBluetooth.setBackgroundColor(Color.GREEN);
@@ -236,9 +272,9 @@ public class BluetoothDemoFragment extends Fragment {
     private boolean checkIfBluetoothAvailable() {
         boolean isAvailable = true;
         //get the bluetooth adapter
-        this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //check if the bluetooth adapter is null or not
-        if (this.mBluetoothAdapter == null) {
+        if (mBluetoothAdapter == null) {
             // Phone does not support Bluetooth so let the user know and exit.
             isAvailable = false;
             //create an alert dialog
@@ -246,6 +282,7 @@ public class BluetoothDemoFragment extends Fragment {
                     .setTitle("Not compatible")
                     .setMessage("Your phone does not support Bluetooth")
                     .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int which) {
                             System.exit(0);
                         }
