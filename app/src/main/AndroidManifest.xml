@@ -9,6 +9,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Permission to access camera -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Permission to access bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- Permission to access bluetooth admin functions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- Permission to access location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"

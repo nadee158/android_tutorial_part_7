@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dip"
+    tools:context="lk.uok.mit.fragment.BluetoothDemoFragment">
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonSwitchBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Turn Bluetooth On" />
+
+        <Button
+            android:id="@+id/buttonSwitchBluetoothVisibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Enable Bluetooth Visibility" />
+
+        <Button
+            android:id="@+id/buttonListBluetoothDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="List Bluetooth Devices" />
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/listViewBluetoothDevices"
+        android:layout_below="@id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+
+</RelativeLayout>
