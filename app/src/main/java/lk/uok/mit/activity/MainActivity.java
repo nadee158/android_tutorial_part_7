@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import lk.uok.mit.fragment.AccelerometerDemoFragment;
+import lk.uok.mit.fragment.BluetoothDemoFragment;
 import lk.uok.mit.fragment.CameraDemoFragment;
 import lk.uok.mit.fragment.EnvironmentSensorsDemoFragment;
 import lk.uok.mit.fragment.GyroscopeDemoFragment;
@@ -139,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
                                 ft = getSupportFragmentManager().beginTransaction();
                                 // Replace the contents of the container with the new fragment
                                 ft.replace(R.id.fragment_content, new CameraDemoFragment());
+                                // Complete the changes added above
+                                ft.commit();
+                                break;
+                            case R.id.nav_bluetooth_demo:
+                                //Open the  BluetoothDemoFragment
+                                // Begin the transaction
+                                ft = getSupportFragmentManager().beginTransaction();
+                                // Replace the contents of the container with the new fragment
+                                ft.replace(R.id.fragment_content, new BluetoothDemoFragment());
                                 // Complete the changes added above
                                 ft.commit();
                                 break;

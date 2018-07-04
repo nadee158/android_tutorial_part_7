@@ -7,19 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,43 +21,43 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import lk.uok.mit.helloworld.R;
+import lk.uok.mit.util.DemoUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CameraDemoFragment extends Fragment {
 
+    //a code to identify the requested context of the capera app
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 1;
-    public static final String IMAGE_EXTENSION = "jpg";
-    // Gallery directory name to store the images or videos
-    public static final String GALLERY_DIRECTORY_NAME = "CameraDemo";
+
     // Bitmap sampling size
     public static final int BITMAP_SAMPLE_SIZE = 8;
 
+    //to hold the bitmap of the captured image
     private Bitmap bitmap;
+
+    //the image view
     private ImageView imageView;
 
-    private Button buttonCameraApp;
-    private Button buttonCameraAPI;
+    //the button to capture image
+    private Button buttonCaptureImage;
 
+    //the constructed storage path of the captured image
     private String imageStoragePath;
 
+    //the context
     private Context context;
-    private int uniqueAppRequestCode = 1234;
 
-
+    //permission array required execute the code here
     private String[] requiredPermissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
 
 
     public CameraDemoFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,107 +71,62 @@ public class CameraDemoFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        context = getContext();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //initialize the image view
         imageView = view.findViewById(R.id.imageViewCameraImage);
-        buttonCameraApp = view.findViewById(R.id.buttonCameraApp);
-        buttonCameraAPI = view.findViewById(R.id.buttonCameraAPI);
+        //initialize the button
+        buttonCaptureImage = view.findViewById(R.id.buttonCameraApp);
+        //initalize the context
         context = getContext();
-
-        buttonCameraApp.setOnClickListener(new View.OnClickListener() {
+        //set the onclick listener of the button
+        buttonCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean hasUserPermissions = hasUserPermissions(requiredPermissions);
+                //check if user has given the required permissions
+                boolean hasUserPermissions = DemoUtil.hasUserPermissions(context, requiredPermissions);
                 if (!(hasUserPermissions)) {
                     //if read contact permission is not already granted, request permission
-                    requestPermissions(requiredPermissions);
+                    requestPermissions(requiredPermissions, DemoUtil.UNIQUE_APP_REQUEST_CODE);
                 } else {
-                    boolean cameraAvailable = isCameraAvailable();
+                    //check if the camera is available in this device
+                    boolean cameraAvailable = DemoUtil.isSystemFeatureAvailable(context, PackageManager.FEATURE_CAMERA);
                     if (cameraAvailable) {
+                        //if camera is available, capture the image
                         captureImage();
+                    } else {
+                        //else notify the user
+                        Toast.makeText(context,
+                                "Camera is not Available!", Toast.LENGTH_SHORT)
+                                .show();
                     }
                 }
             }
         });
     }
 
-    //a method to check if a camera is available in device
-    private boolean isCameraAvailable() {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
-
-    // Request runtime permissions from app user.
-    private void requestPermissions(String[] permissions) {
-        ActivityCompat.requestPermissions(getActivity(), permissions, uniqueAppRequestCode);
-    }
 
     /**
      * Capturing Camera Image will launch camera app requested image capture
      */
     private void captureImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        File file = getOutputMediaFile();
+        //get a unique name for the image file
+        String fileName = DemoUtil.getUniqueFileName(DemoUtil.IMAGE_PREFIX, DemoUtil.IMAGE_EXTENSION);
+        //construct a file to store the captured image
+        File file = DemoUtil.constructOutputMediaFile(fileName);
         if (file != null) {
+            //if the file is created and returned, get its path
             imageStoragePath = file.getAbsolutePath();
         }
-
-        Uri fileUri = getOutputMediaFileUri(context, file);
-
+        //get the uniform resource locator of the file
+        Uri fileUri = DemoUtil.getOutputMediaFileUri(context, file);
+        //put the URI in to camera intent as data, it will populate this file
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
-    /**
-     * Creates and returns the image or video file before opening the camera
-     */
-    public static File getOutputMediaFile() {
-
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                GALLERY_DIRECTORY_NAME);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.e(GALLERY_DIRECTORY_NAME, "Failed to CREATE create "
-                        + GALLERY_DIRECTORY_NAME + " directory");
-                return null;
-            }
-        }
-
-        // Preparing media file naming convention
-        // adds timestamp
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(Calendar.getInstance().getTime());
-
-        String fileName = "IMG_" + timeStamp + "." + IMAGE_EXTENSION;
-        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        Log.e("GALLERY_DIRECTORY", "Failed to CREATE create " + mediaFile);
-        return mediaFile;
-    }
-
-    public Uri getOutputMediaFileUri(Context context, File file) {
-        Log.d("THE CONTEXT", context.toString());
-        Log.d("THE FILE", file.toString());
-        return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
-    }
 
     /**
      * Activity result method will be called after closing the camera
@@ -189,7 +137,7 @@ public class CameraDemoFragment extends Fragment {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 // Refreshing the gallery
-                refreshGallery(context, imageStoragePath);
+                DemoUtil.refreshGallery(context, imageStoragePath);
                 // successfully captured the image
                 // display it in image view
                 previewCapturedImage();
@@ -207,61 +155,15 @@ public class CameraDemoFragment extends Fragment {
         }
     }
 
-    /**
-     * Refreshes gallery on adding new image/video. Gallery won't be refreshed
-     * on older devices until device is rebooted
-     */
-    public static void refreshGallery(Context context, String filePath) {
-        // ScanFile so it will be appeared on Gallery
-        MediaScannerConnection.scanFile(context,
-                new String[]{filePath}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    @Override
-                    public void onScanCompleted(String path, Uri uri) {
-                    }
-                });
-    }
 
     /**
      * Display image from gallery
      */
     private void previewCapturedImage() {
-        try {
-
-            Bitmap bitmap = optimizeBitmap(BITMAP_SAMPLE_SIZE, imageStoragePath);
-
-            imageView.setImageBitmap(bitmap);
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Downsizing the bitmap to avoid OutOfMemory exceptions
-     */
-    public static Bitmap optimizeBitmap(int sampleSize, String filePath) {
-        // bitmap factory
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-        // downsizing image as it throws OutOfMemory Exception for larger
-        // images
-        options.inSampleSize = sampleSize;
-
-        return BitmapFactory.decodeFile(filePath, options);
-    }
-
-    // Check whether user has all the passed permissions or not.
-    private boolean hasUserPermissions(String[] permissions) {
-        boolean ret = true;
-        for (int i = 0; i < permissions.length; i++) {
-            // return permission grant status.
-            int hasPermission = ContextCompat.checkSelfPermission(context, permissions[i]);
-            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-                ret = false;
-            }
-        }
-        return ret;
+        //construct the bit map ater reducing the file seize
+        Bitmap bitmap = DemoUtil.optimizeBitmap(BITMAP_SAMPLE_SIZE, imageStoragePath);
+        //set the generated bitmap to the image view
+        imageView.setImageBitmap(bitmap);
     }
 
 
