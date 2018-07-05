@@ -31,7 +31,7 @@ import java.util.Set;
 
 import lk.uok.mit.adapter.BluetoothDeviceAdadpter;
 import lk.uok.mit.helloworld.R;
-import lk.uok.mit.listener.OnPairButtonClickListener;
+import lk.uok.mit.listener.OnCustomButtonClickListener;
 import lk.uok.mit.thread.ManageConnectThread;
 import lk.uok.mit.util.DemoUtil;
 
@@ -117,14 +117,31 @@ public class BluetoothDemoFragment extends Fragment {
         listViewBluetoothDevices = view.findViewById(R.id.listViewBluetoothDevices);
         //initialize the adapter
         bluetoothDeviceAdadpter = new BluetoothDeviceAdadpter(context, bluetoothDevices);
-        //set the listener to handle onclick events of each button
-        bluetoothDeviceAdadpter.setPairButonListener(new OnPairButtonClickListener() {
+        //get the button reference for list devices button
+        buttonListBluetoothDevices = view.findViewById(R.id.buttonListBluetoothDevices);
+        //set the onclick listener of list devices button
+        buttonListBluetoothDevices.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPairButtonClick(int position) {
+            public void onClick(View v) {
+                //call the switchBluetooth method upon click of the button
+                listBluetoothDevices();
+            }
+        });
+        //set the adapter to the list view
+        listViewBluetoothDevices.setAdapter(bluetoothDeviceAdadpter);
+
+
+        //set the listener to handle onclick events of each button
+        bluetoothDeviceAdadpter.setPairButonListener(new OnCustomButtonClickListener() {
+            @Override
+            public void onCustomButtonClick(int position) {
+                //get the bluetooth device upon the button was clicked using the position passed
                 BluetoothDevice device = bluetoothDevices.get(position);
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    //if the device is already paired, unpair it
                     unpairDevice(device);
                 } else {
+                    //if its not paired, try and pair device
                     Toast.makeText(context,
                             "Pairing device..", Toast.LENGTH_SHORT).show();
                     pairDevice(device);
@@ -133,9 +150,9 @@ public class BluetoothDemoFragment extends Fragment {
         });
 
         //set the listener to handle send data events of each button
-        bluetoothDeviceAdadpter.setSendDataButonListener(new OnPairButtonClickListener() {
+        bluetoothDeviceAdadpter.setSendDataButonListener(new OnCustomButtonClickListener() {
             @Override
-            public void onPairButtonClick(int position) {
+            public void onCustomButtonClick(int position) {
                 BluetoothDevice device = bluetoothDevices.get(position);
                 //check if the device is paired
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -147,18 +164,7 @@ public class BluetoothDemoFragment extends Fragment {
                 }
             }
         });
-        listViewBluetoothDevices.setAdapter(bluetoothDeviceAdadpter);
 
-        //get the button reference for list devices button
-        buttonListBluetoothDevices = view.findViewById(R.id.buttonListBluetoothDevices);
-        //set the onclick listener of list devices button
-        buttonListBluetoothDevices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //call the switchBluetooth method upon click of the button
-                listBluetoothDevices();
-            }
-        });
     }
 
 
@@ -215,10 +221,12 @@ public class BluetoothDemoFragment extends Fragment {
 
     private void pairDevice(BluetoothDevice device) {
         try {
+            //use reflection to invoke pairing method named "createBond" on class android.bluetooth.BluetoothDevice
             Method method = device.getClass().getMethod("createBond", (Class[]) null);
             method.invoke(device, (Object[]) null);
+            //use reflection to invoke method named "setPairingConfirmation" on class android.bluetooth.BluetoothDevice
+            //this is to try and stop confirmation from user
             device.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(device, true);
-            device.getClass().getMethod("cancelPairingUserInput", boolean.class).invoke(device);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -226,6 +234,7 @@ public class BluetoothDemoFragment extends Fragment {
 
     private void unpairDevice(BluetoothDevice device) {
         try {
+            //use reflection to invoke un-pairing method named "removeBond" on class android.bluetooth.BluetoothDevice
             Method method = device.getClass().getMethod("removeBond", (Class[]) null);
             method.invoke(device, (Object[]) null);
         } catch (Exception e) {

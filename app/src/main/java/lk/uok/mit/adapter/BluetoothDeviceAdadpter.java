@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import lk.uok.mit.helloworld.R;
-import lk.uok.mit.listener.OnPairButtonClickListener;
+import lk.uok.mit.listener.OnCustomButtonClickListener;
 
 public class BluetoothDeviceAdadpter extends ArrayAdapter<BluetoothDevice> {
 
@@ -25,9 +25,9 @@ public class BluetoothDeviceAdadpter extends ArrayAdapter<BluetoothDevice> {
     //an inflater to inflate layout
     private LayoutInflater mInflater;
     //a click listener to handle click event of pair/unpair button
-    private OnPairButtonClickListener pairButonListener;
+    private OnCustomButtonClickListener pairButonListener;
     //a click listener to handle click event of send data button
-    private OnPairButtonClickListener sendDataButonListener;
+    private OnCustomButtonClickListener sendDataButonListener;
 
     //the view holder pattern is used to prevent
     // calling findViewById() frequently during the scrolling of ListView
@@ -93,7 +93,7 @@ public class BluetoothDeviceAdadpter extends ArrayAdapter<BluetoothDevice> {
             @Override
             public void onClick(View v) {
                 if (pairButonListener != null) {
-                    pairButonListener.onPairButtonClick(position);
+                    pairButonListener.onCustomButtonClick(position);
                 }
             }
         });
@@ -102,18 +102,20 @@ public class BluetoothDeviceAdadpter extends ArrayAdapter<BluetoothDevice> {
             @Override
             public void onClick(View v) {
                 if (sendDataButonListener != null) {
-                    sendDataButonListener.onPairButtonClick(position);
+                    sendDataButonListener.onCustomButtonClick(position);
                 }
             }
         });
         return convertView;
     }
 
-    public void setPairButonListener(OnPairButtonClickListener pairButonListener) {
+    //public setter method to set the click listener of pair button
+    public void setPairButonListener(OnCustomButtonClickListener pairButonListener) {
         this.pairButonListener = pairButonListener;
     }
 
-    public void setSendDataButonListener(OnPairButtonClickListener sendDataButonListener) {
+    //public setter method to set the click listener of send data  button
+    public void setSendDataButonListener(OnCustomButtonClickListener sendDataButonListener) {
         this.sendDataButonListener = sendDataButonListener;
     }
 }
